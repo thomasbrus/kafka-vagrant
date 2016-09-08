@@ -83,6 +83,6 @@ Vagrant.configure("2") do |config|
     chef.cookbooks_path = "chef/cookbooks"
     chef.nodes_path = "chef/nodes"
 
-    chef.add_recipe "kafka_vagrant::default"
+    chef.add_recipe "kafka-vagrant::default"
   end
 end
