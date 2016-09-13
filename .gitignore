@@ -1,2 +1,3 @@
-chef/nodes/vagrant-*.json
+chef/nodes/kafka*.json
+chef/nodes/zookeeper.json
 .vagrant
