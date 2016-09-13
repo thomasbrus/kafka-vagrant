@@ -57,7 +57,7 @@ Vagrant.configure("2") do |config|
   # information on available options.
 
   config.vm.provider "virtualbox" do |vb|
-    vb.memory = "1024"
+    vb.memory = "512"
   end
 
   # Define a Vagrant Push strategy for pushing to Atlas. Other push strategies
