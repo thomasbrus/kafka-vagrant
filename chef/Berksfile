@@ -2,3 +2,4 @@ source 'https://supermarket.chef.io'
 
 cookbook 'zookeeper', '~> 7.1.1'
 cookbook 'kafka', '~> 2.1.0'
+cookbook 'java', '~> 1.42.0'

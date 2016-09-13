@@ -1,4 +1,5 @@
 DEPENDENCIES
+  java (~> 1.42.0)
   kafka (~> 2.1.0)
   zookeeper (~> 7.1.1)
 

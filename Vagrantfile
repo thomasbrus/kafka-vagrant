@@ -12,6 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
+
   config.vm.box = "ubuntu/trusty64"
 
   # Disable automatic box update checking. If you disable this, then
@@ -22,11 +23,12 @@ Vagrant.configure("2") do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  config.vm.network "forwarded_port", guest: 2181, host: 2182
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
   # config.vm.network "private_network", ip: "192.168.33.10"
+
+  config.vm.network "private_network", type: "dhcp"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -74,15 +76,67 @@ Vagrant.configure("2") do |config|
   # SHELL
 
   # See https://github.com/berkshelf/vagrant-berkshelf#usage
+
   config.berkshelf.berksfile_path = "chef/Berksfile"
   config.berkshelf.enabled = true
 
-  config.vm.provision "chef_solo" do |chef|
-    chef.product = "chefdk"
+  # See https://www.vagrantup.com/docs/multi-machine/
 
-    chef.cookbooks_path = "chef/cookbooks"
-    chef.nodes_path = "chef/nodes"
+  config.vm.define "zookeeper" do |zookeeper|
+    zookeeper.vm.hostname = "zookeeper"
+    zookeeper.vm.network "forwarded_port", guest: 2181, host: 2182
+    zookeeper.vm.network "private_network", ip: "172.28.128.5"
 
-    chef.add_recipe "kafka-vagrant::default"
+    zookeeper.vm.provision "chef_solo" do |chef|
+      chef.product = "chefdk"
+
+      chef.cookbooks_path = "chef/cookbooks"
+      chef.nodes_path = "chef/nodes"
+      chef.roles_path = "chef/roles"
+
+      chef.add_role "zookeeper"
+    end
+  end
+
+  config.vm.define "kafka1" do |kafka1|
+    kafka1.vm.hostname = "kafka1"
+
+    kafka1.vm.provision "chef_solo" do |chef|
+      chef.product = "chefdk"
+
+      chef.cookbooks_path = "chef/cookbooks"
+      chef.nodes_path = "chef/nodes"
+      chef.roles_path = "chef/roles"
+
+      chef.add_role "kafka1"
+    end
+  end
+
+  config.vm.define "kafka2" do |kafka2|
+    kafka2.vm.hostname = "kafka2"
+
+    kafka2.vm.provision "chef_solo" do |chef|
+      chef.product = "chefdk"
+
+      chef.cookbooks_path = "chef/cookbooks"
+      chef.nodes_path = "chef/nodes"
+      chef.roles_path = "chef/roles"
+
+      chef.add_role "kafka2"
+    end
+  end
+
+  config.vm.define "kafka3" do |kafka3|
+    kafka3.vm.hostname = "kafka3"
+
+    kafka3.vm.provision "chef_solo" do |chef|
+      chef.product = "chefdk"
+
+      chef.cookbooks_path = "chef/cookbooks"
+      chef.nodes_path = "chef/nodes"
+      chef.roles_path = "chef/roles"
+
+      chef.add_role "kafka3"
+    end
   end
 end
