@@ -5,30 +5,22 @@ service 'kafka' do
   action :start
 end
 
-execute 'kafka-topics.sh --create' do
-  command <<-COMMAND % node['kafka']['broker']['zookeeper.connect']
-    /opt/kafka/bin/kafka-topics.sh --create --topic elections --partitions 3 --replication 3 --zookeeper %s
-  COMMAND
-
-  # not_if <<-NOT_IF % node['kafka']['broker']['zookeeper.connect']
-  #   /opt/kafka/bin/kafka-topics.sh --list --zookeeper %s | grep elections
-  # NOT_IF
+kafka_topic 'elections' do
+  replication 3
+  partitions 3
 end
 
-execute 'kafka-topics.sh --create' do
-  command <<-COMMAND % node['kafka']['broker']['zookeeper.connect']
-    /opt/kafka/bin/kafka-topics.sh --create --topic identity-access --partitions 3 --replication 3 --zookeeper %s
-  COMMAND
+kafka_topic 'identity-access' do
+  replication 3
+  partitions 3
 end
 
-execute 'kafka-topics.sh --create' do
-  command <<-COMMAND % node['kafka']['broker']['zookeeper.connect']
-    /opt/kafka/bin/kafka-topics.sh --create --topic identities --partitions 3 --replication 3 --zookeeper %s
-  COMMAND
+kafka_topic 'identities' do
+  replication 3
+  partitions 3
 end
 
-execute 'kafka-topics.sh --create' do
-  command <<-COMMAND % node['kafka']['broker']['zookeeper.connect']
-    /opt/kafka/bin/kafka-topics.sh --create --topic default --partitions 3 --replication 3 --zookeeper %s
-  COMMAND
+kafka_topic 'default' do
+  replication 3
+  partitions 3
 end

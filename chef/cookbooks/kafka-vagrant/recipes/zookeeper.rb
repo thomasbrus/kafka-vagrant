@@ -1,6 +1,11 @@
 include_recipe 'zookeeper::default'
 include_recipe 'zookeeper::service'
 
-execute "create /pep pep" do
-  command "/opt/zookeeper/bin/zkCli.sh create /pep pep"
+path = "/pep"
+description = "Kafka PEP"
+
+execute %(create #{path} "#{description}") do
+  command %(/opt/zookeeper/bin/zkCli.sh create #{path} "#{description}")
+  not_if %(/opt/zookeeper/bin/zkCli.sh ls #{path})
 end
+
